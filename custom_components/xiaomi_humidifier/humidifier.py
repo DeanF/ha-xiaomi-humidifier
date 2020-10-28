@@ -23,7 +23,7 @@ from homeassistant.const import (
     CONF_TOKEN,
 )
 from homeassistant.components.humidifier import (
-    ATTR_HUMIDITY, HumidifierEntity, PLATFORM_SCHEMA,
+    ATTR_HUMIDITY, HumidifierEntity, PLATFORM_SCHEMA, SUPPORT_MODES,
 )
 
 from homeassistant.exceptions import PlatformNotReady
@@ -50,15 +50,17 @@ ATTR_NO_WATER = "no_water"
 ATTR_WATER_TANK_DETACHED = "water_tank_detached"
 ATTR_BUZZER = "buzzer"
 ATTR_LED = "led"
+ATTR_TARGET_HUMIDITY = "target_humidity"
+ATTR_HUMIDITY_SENSOR = "humidity_sensor"
 AVAILABLE_ATTRIBUTES_AIRHUMIDIFIER = {
     ATTR_TEMPERATURE: "temperature",
-    ATTR_HUMIDITY: "humidity",
+    ATTR_HUMIDITY_SENSOR: "humidity",
     ATTR_MODE: "mode",
     ATTR_BUZZER: "buzzer",
     ATTR_LED: "led",
     ATTR_NO_WATER: "no_water",
     ATTR_WATER_TANK_DETACHED: "water_tank_detached",
-
+    ATTR_TARGET_HUMIDITY: "target_humidity",
 }
 SERVICE_TO_METHOD = {
     "humidifier_set_buzzer_on": {"method": "async_set_buzzer_on"},
@@ -80,6 +82,10 @@ class XiaomiAirHumidifier(HumidifierEntity):
         self._mode_list = [mode.name for mode in AirhumidifierMjjsqOperationMode]
         self._state_attrs = {}
         self._state_attrs = {attribute: None for attribute in self._available_attributes}
+
+    @property
+    def supported_features(self):
+        return SUPPORT_MODES
 
     @property
     def should_poll(self):
@@ -118,6 +124,10 @@ class XiaomiAirHumidifier(HumidifierEntity):
     @property
     def max_humidity(self) -> int:
         return 70
+
+    @property
+    def target_humidity(self):
+        return self._state_attrs[ATTR_TARGET_HUMIDITY]
 
     @staticmethod
     def _extract_value_from_attribute(state, attribute):
