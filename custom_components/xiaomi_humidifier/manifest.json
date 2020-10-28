@@ -1,0 +1,15 @@
+{
+  "domain": "xiaomi_humidifier",
+  "name": "Xiaomi Mi Air Humidifier Integration",
+  "config_flow": false,
+  "documentation": "https://github.com/DeanF/ha-xiaomi-humidifier",
+  "issue_tracker": "https://github.com/DeanF/ha-xiaomi-humidifier/issues",
+  "requirements": [
+    "construct==2.10.56",
+    "python-miio>=0.5.3"
+  ],
+  "dependencies": [],
+  "codeowners": [
+    "@DeanF"
+  ]
+}
