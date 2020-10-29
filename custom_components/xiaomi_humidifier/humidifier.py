@@ -3,6 +3,7 @@ from enum import Enum
 from functools import partial
 import logging
 
+from homeassistant.components.climate import ATTR_CURRENT_HUMIDITY, ATTR_CURRENT_TEMPERATURE
 from homeassistant.components.xiaomi_miio.fan import AIRPURIFIER_SERVICE_SCHEMA
 from miio import (  # pylint: disable=import-error
     AirHumidifier,
@@ -23,7 +24,7 @@ from homeassistant.const import (
     CONF_TOKEN,
 )
 from homeassistant.components.humidifier import (
-    ATTR_HUMIDITY, HumidifierEntity, PLATFORM_SCHEMA, SUPPORT_MODES,
+    ATTR_HUMIDITY, DEVICE_CLASS_HUMIDIFIER, HumidifierEntity, PLATFORM_SCHEMA, SUPPORT_MODES,
 )
 
 from homeassistant.exceptions import PlatformNotReady
@@ -53,8 +54,8 @@ ATTR_LED = "led"
 ATTR_TARGET_HUMIDITY = "target_humidity"
 ATTR_HUMIDITY_SENSOR = "humidity_sensor"
 AVAILABLE_ATTRIBUTES_AIRHUMIDIFIER = {
-    ATTR_TEMPERATURE: "temperature",
-    ATTR_HUMIDITY_SENSOR: "humidity",
+    ATTR_CURRENT_TEMPERATURE: "temperature",
+    ATTR_CURRENT_HUMIDITY: "humidity",
     ATTR_MODE: "mode",
     ATTR_BUZZER: "buzzer",
     ATTR_LED: "led",
@@ -63,10 +64,10 @@ AVAILABLE_ATTRIBUTES_AIRHUMIDIFIER = {
     ATTR_TARGET_HUMIDITY: "target_humidity",
 }
 SERVICE_TO_METHOD = {
-    "humidifier_set_buzzer_on": {"method": "async_set_buzzer_on"},
-    "humidifier_set_buzzer_off": {"method": "async_set_buzzer_off"},
-    "humidifier_set_led_on": {"method": "async_set_led_on"},
-    "humidifier_set_led_off": {"method": "async_set_led_off"},
+    "set_buzzer_on": {"method": "async_set_buzzer_on"},
+    "set_buzzer_off": {"method": "async_set_buzzer_off"},
+    "set_led_on": {"method": "async_set_led_on"},
+    "set_led_off": {"method": "async_set_led_off"},
 }
 
 
@@ -111,6 +112,10 @@ class XiaomiAirHumidifier(HumidifierEntity):
     def device_state_attributes(self):
         """Return the state attributes of the device."""
         return self._state_attrs
+
+    @property
+    def device_class(self):
+        return DEVICE_CLASS_HUMIDIFIER
 
     @property
     def is_on(self):
