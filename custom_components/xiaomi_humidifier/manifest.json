@@ -7,7 +7,7 @@
   "version": "0.0.1",
   "requirements": [
     "construct==2.10.56",
-    "python-miio>=0.5.3"
+    "python-miio>=0.5.12"
   ],
   "dependencies": [],
   "codeowners": [
