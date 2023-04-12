@@ -6,11 +6,14 @@ import logging
 from homeassistant.components.climate import ATTR_CURRENT_HUMIDITY, ATTR_CURRENT_TEMPERATURE
 from homeassistant.components.xiaomi_miio.fan import AIRPURIFIER_SERVICE_SCHEMA
 from miio import (  # pylint: disable=import-error
+    Device,
+    DeviceException,
+)
+from miio.integrations.humidifier import (
     AirHumidifier,
     AirHumidifierMjjsq,
-    Device, DeviceException,
 )
-from miio.airhumidifier_mjjsq import (  # pylint: disable=import-error, import-error
+from miio.integrations.humidifier.deerma.airhumidifier_mjjsq import (  # pylint: disable=import-error, import-error
     OperationMode as AirhumidifierMjjsqOperationMode,
 )
 
